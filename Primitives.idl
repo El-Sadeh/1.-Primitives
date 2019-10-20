@@ -1,0 +1,9 @@
+struct PrimitiveStruct{
+	char theChar;
+	boolean theBool;
+	float theFloat;
+	short theShort;
+	long theLong;
+	double theDouble;
+	
+	};
