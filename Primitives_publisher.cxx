@@ -22,16 +22,15 @@ void publisher_main(int domain_id, int sample_count)
 	sample.theChar('c');
 	sample.theDouble(1234.567891012);
 	sample.theFloat(0.5);
-	sample.theLongLong(2147483648);
+	sample.theLongLong(0xAB0f);
 	sample.theLong(2147483647);
 	sample.theOctet(10); 
-	sample.ThePointer(NULL);
 	sample.theShort(65535);
-	sample.theUnsignedLong(9223372036854775807);
+	sample.theUnsignedLong(3372036854775807);
 	sample.theUnsignedLongLong(922337203000000007);
 	sample.theUnsignedShort(1203);
 	sample.thWchar('W');
-	sample.theLongDouble(1.1);
+
 
     for (int count = 0; count < sample_count || sample_count == 0; count++) {
         // Modify the data to be written here

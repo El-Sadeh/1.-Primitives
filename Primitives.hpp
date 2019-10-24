@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef Primitives_1782958004_hpp
-#define Primitives_1782958004_hpp
+#ifndef Primitives_1782957957_hpp
+#define Primitives_1782957957_hpp
 
 #include <iosfwd>
 
@@ -55,11 +55,6 @@ or consult the RTI Connext manual.
 #define NDDSUSERDllExport __declspec(dllexport)
 #endif
 
-#if (defined(RTI_WIN32) || defined (RTI_WINCE)) && defined(NDDS_USER_DLL_EXPORT)
-// On Windows, dll-export template instantiations of standard types used by
-// other dll-exported types
-template class NDDSUSERDllExport dds::core::detail::shared_ptr<int32_t >;
-#endif
 class NDDSUSERDllExport PrimitiveStruct {
 
   public:
@@ -77,9 +72,7 @@ class NDDSUSERDllExport PrimitiveStruct {
         uint16_t theUnsignedShort,
         uint32_t theUnsignedLong,
         rti::core::int64 theLongLong,
-        rti::core::uint64 theUnsignedLongLong,
-        const rti::core::LongDouble& theLongDouble,
-        dds::core::external<int32_t> ThePointer);
+        rti::core::uint64 theUnsignedLongLong);
 
     #ifdef RTI_CXX11_RVALUE_REFERENCES
     #ifndef RTI_CXX11_NO_IMPLICIT_MOVE_OPERATIONS
@@ -88,8 +81,8 @@ class NDDSUSERDllExport PrimitiveStruct {
     PrimitiveStruct& operator=(const PrimitiveStruct&) = default;
     PrimitiveStruct(const PrimitiveStruct&) = default;
     #else
-    PrimitiveStruct(PrimitiveStruct&& other_);  
-    PrimitiveStruct& operator=(PrimitiveStruct&&  other_);
+    PrimitiveStruct(PrimitiveStruct&& other_) OMG_NOEXCEPT;  
+    PrimitiveStruct& operator=(PrimitiveStruct&&  other_) OMG_NOEXCEPT;
     #endif
     #endif 
 
@@ -141,14 +134,6 @@ class NDDSUSERDllExport PrimitiveStruct {
     const rti::core::uint64& theUnsignedLongLong() const OMG_NOEXCEPT;
     void theUnsignedLongLong(rti::core::uint64 value);
 
-    rti::core::LongDouble& theLongDouble() OMG_NOEXCEPT; 
-    const rti::core::LongDouble& theLongDouble() const OMG_NOEXCEPT;
-    void theLongDouble(const rti::core::LongDouble& value);
-
-    dds::core::external<int32_t>& ThePointer() OMG_NOEXCEPT; 
-    const dds::core::external<int32_t>& ThePointer() const OMG_NOEXCEPT;
-    void ThePointer(dds::core::external<int32_t> value);
-
     bool operator == (const PrimitiveStruct& other_) const;
     bool operator != (const PrimitiveStruct& other_) const;
 
@@ -168,8 +153,6 @@ class NDDSUSERDllExport PrimitiveStruct {
     uint32_t m_theUnsignedLong_;
     rti::core::int64 m_theLongLong_;
     rti::core::uint64 m_theUnsignedLongLong_;
-    rti::core::LongDouble m_theLongDouble_;
-    dds::core::external<int32_t> m_ThePointer_;
 
 };
 
@@ -234,8 +217,6 @@ namespace rti {
             dds::core::xtypes::ExtensibilityKind::EXTENSIBLE;                
         };
 
-        template<>
-        struct topic_type_has_external_members<PrimitiveStruct> : public dds::core::true_type {};
     }
 }
 
@@ -246,5 +227,5 @@ namespace rti {
 #define NDDSUSERDllExport
 #endif
 
-#endif // Primitives_1782958004_hpp
+#endif // Primitives_1782957957_hpp
 

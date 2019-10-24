@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef PrimitivesPlugin_1782958004_h
-#define PrimitivesPlugin_1782958004_h
+#ifndef PrimitivesPlugin_1782957957_h
+#define PrimitivesPlugin_1782957957_h
 
 #include "Primitives.hpp"
 
@@ -267,5 +267,5 @@ PrimitiveStructPlugin_delete(struct PRESTypePlugin *);
 #define NDDSUSERDllExport
 #endif
 
-#endif /* PrimitivesPlugin_1782958004_h */
+#endif /* PrimitivesPlugin_1782957957_h */
 

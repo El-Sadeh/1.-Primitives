@@ -33,8 +33,7 @@ PrimitiveStruct::PrimitiveStruct() :
     m_theUnsignedShort_ (0) ,
     m_theUnsignedLong_ (0u) ,
     m_theLongLong_ (0ll) ,
-    m_theUnsignedLongLong_ (0ull) ,
-    m_theLongDouble_ (0.0)  {
+    m_theUnsignedLongLong_ (0ull)  {
 }   
 
 PrimitiveStruct::PrimitiveStruct (
@@ -49,9 +48,7 @@ PrimitiveStruct::PrimitiveStruct (
     uint16_t theUnsignedShort,
     uint32_t theUnsignedLong,
     rti::core::int64 theLongLong,
-    rti::core::uint64 theUnsignedLongLong,
-    const rti::core::LongDouble& theLongDouble,
-    dds::core::external<int32_t> ThePointer)
+    rti::core::uint64 theUnsignedLongLong)
     :
         m_theChar_( theChar ),
         m_thWchar_( thWchar ),
@@ -64,14 +61,12 @@ PrimitiveStruct::PrimitiveStruct (
         m_theUnsignedShort_( theUnsignedShort ),
         m_theUnsignedLong_( theUnsignedLong ),
         m_theLongLong_( theLongLong ),
-        m_theUnsignedLongLong_( theUnsignedLongLong ),
-        m_theLongDouble_( theLongDouble ),
-        m_ThePointer_( ThePointer ) {
+        m_theUnsignedLongLong_( theUnsignedLongLong ) {
 }
 
 #ifdef RTI_CXX11_RVALUE_REFERENCES
 #ifdef RTI_CXX11_NO_IMPLICIT_MOVE_OPERATIONS
-PrimitiveStruct::PrimitiveStruct(PrimitiveStruct&& other_)  :m_theChar_ (std::move(other_.m_theChar_))
+PrimitiveStruct::PrimitiveStruct(PrimitiveStruct&& other_) OMG_NOEXCEPT  :m_theChar_ (std::move(other_.m_theChar_))
 ,
 m_thWchar_ (std::move(other_.m_thWchar_))
 ,
@@ -94,14 +89,10 @@ m_theUnsignedLong_ (std::move(other_.m_theUnsignedLong_))
 m_theLongLong_ (std::move(other_.m_theLongLong_))
 ,
 m_theUnsignedLongLong_ (std::move(other_.m_theUnsignedLongLong_))
-,
-m_theLongDouble_ (std::move(other_.m_theLongDouble_))
-,
-m_ThePointer_ (std::move(other_.m_ThePointer_))
 {
 } 
 
-PrimitiveStruct& PrimitiveStruct::operator=(PrimitiveStruct&&  other_) {
+PrimitiveStruct& PrimitiveStruct::operator=(PrimitiveStruct&&  other_) OMG_NOEXCEPT {
     PrimitiveStruct tmp(std::move(other_));
     swap(tmp); 
     return *this;
@@ -124,8 +115,6 @@ void PrimitiveStruct::swap(PrimitiveStruct& other_)  OMG_NOEXCEPT
     swap(m_theUnsignedLong_, other_.m_theUnsignedLong_);
     swap(m_theLongLong_, other_.m_theLongLong_);
     swap(m_theUnsignedLongLong_, other_.m_theUnsignedLongLong_);
-    swap(m_theLongDouble_, other_.m_theLongDouble_);
-    swap(m_ThePointer_, other_.m_ThePointer_);
 }  
 
 bool PrimitiveStruct::operator == (const PrimitiveStruct& other_) const {
@@ -163,12 +152,6 @@ bool PrimitiveStruct::operator == (const PrimitiveStruct& other_) const {
         return false;
     }
     if (m_theUnsignedLongLong_ != other_.m_theUnsignedLongLong_) {
-        return false;
-    }
-    if (m_theLongDouble_ != other_.m_theLongDouble_) {
-        return false;
-    }
-    if (m_ThePointer_ != other_.m_ThePointer_) {
         return false;
     }
     return true;
@@ -322,30 +305,6 @@ void PrimitiveStruct::theUnsignedLongLong(rti::core::uint64 value) {
     m_theUnsignedLongLong_ = value;
 }
 
-rti::core::LongDouble& PrimitiveStruct::theLongDouble() OMG_NOEXCEPT {
-    return m_theLongDouble_;
-}
-
-const rti::core::LongDouble& PrimitiveStruct::theLongDouble() const OMG_NOEXCEPT {
-    return m_theLongDouble_;
-}
-
-void PrimitiveStruct::theLongDouble(const rti::core::LongDouble& value) {
-    m_theLongDouble_ = value;
-}
-
-dds::core::external<int32_t>& PrimitiveStruct::ThePointer() OMG_NOEXCEPT {
-    return m_ThePointer_;
-}
-
-const dds::core::external<int32_t>& PrimitiveStruct::ThePointer() const OMG_NOEXCEPT {
-    return m_ThePointer_;
-}
-
-void PrimitiveStruct::ThePointer(dds::core::external<int32_t> value) {
-    m_ThePointer_ = value;
-}
-
 std::ostream& operator << (std::ostream& o,const PrimitiveStruct& sample)
 {
     rti::util::StreamFlagSaver flag_saver (o);
@@ -361,9 +320,7 @@ std::ostream& operator << (std::ostream& o,const PrimitiveStruct& sample)
     o << "theUnsignedShort: " << sample.theUnsignedShort()<<", ";
     o << "theUnsignedLong: " << sample.theUnsignedLong()<<", ";
     o << "theLongLong: " << sample.theLongLong()<<", ";
-    o << "theUnsignedLongLong: " << sample.theUnsignedLongLong()<<", ";
-    o << "theLongDouble: " << sample.theLongDouble()<<", ";
-    o << "ThePointer: " << sample.ThePointer() ;
+    o << "theUnsignedLongLong: " << sample.theUnsignedLongLong() ;
     o <<"]";
     return o;
 }
@@ -379,7 +336,7 @@ namespace rti {
             {
                 static RTIBool is_initialized = RTI_FALSE;
 
-                static DDS_TypeCode_Member PrimitiveStruct_g_tc_members[14]=
+                static DDS_TypeCode_Member PrimitiveStruct_g_tc_members[12]=
                 {
 
                     {
@@ -585,40 +542,6 @@ namespace rti {
                         DDS_PUBLIC_MEMBER,/* Member visibility */
                         1,
                         NULL/* Ignored */
-                    }, 
-                    {
-                        (char *)"theLongDouble",/* Member name */
-                        {
-                            12,/* Representation ID */          
-                            DDS_BOOLEAN_FALSE,/* Is a pointer? */
-                            -1, /* Bitfield bits */
-                            NULL/* Member type code is assigned later */
-                        },
-                        0, /* Ignored */
-                        0, /* Ignored */
-                        0, /* Ignored */
-                        NULL, /* Ignored */
-                        RTI_CDR_REQUIRED_MEMBER, /* Is a key? */
-                        DDS_PUBLIC_MEMBER,/* Member visibility */
-                        1,
-                        NULL/* Ignored */
-                    }, 
-                    {
-                        (char *)"ThePointer",/* Member name */
-                        {
-                            13,/* Representation ID */          
-                            DDS_BOOLEAN_TRUE,/* Is a pointer? */
-                            -1, /* Bitfield bits */
-                            NULL/* Member type code is assigned later */
-                        },
-                        0, /* Ignored */
-                        0, /* Ignored */
-                        0, /* Ignored */
-                        NULL, /* Ignored */
-                        RTI_CDR_REQUIRED_MEMBER, /* Is a key? */
-                        DDS_PUBLIC_MEMBER,/* Member visibility */
-                        1,
-                        NULL/* Ignored */
                     }
                 };
 
@@ -632,7 +555,7 @@ namespace rti {
                         0, /* Ignored */
                         0, /* Ignored */
                         NULL, /* Ignored */
-                        14, /* Number of members */
+                        12, /* Number of members */
                         PrimitiveStruct_g_tc_members, /* Members */
                         DDS_VM_NONE  /* Ignored */         
                     }}; /* Type code for PrimitiveStruct*/
@@ -664,10 +587,6 @@ namespace rti {
                 PrimitiveStruct_g_tc_members[10]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_longlong;
 
                 PrimitiveStruct_g_tc_members[11]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_ulonglong;
-
-                PrimitiveStruct_g_tc_members[12]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_longdouble;
-
-                PrimitiveStruct_g_tc_members[13]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_long;
 
                 is_initialized = RTI_TRUE;
 
@@ -751,13 +670,10 @@ namespace dds {
             rti::topic::reset_sample(sample.theUnsignedLong());
             rti::topic::reset_sample(sample.theLongLong());
             rti::topic::reset_sample(sample.theUnsignedLongLong());
-            rti::topic::reset_sample(sample.theLongDouble());
-            rti::topic::reset_sample(sample.ThePointer());
         }
 
         void topic_type_support<PrimitiveStruct>::allocate_sample(PrimitiveStruct& sample, int, int) 
         {
-            rti::topic::allocate_sample(sample.ThePointer(),  -1, -1);
         }
 
     }

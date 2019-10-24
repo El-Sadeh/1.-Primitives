@@ -318,20 +318,6 @@ PrimitiveStructPlugin_serialize(
                 return RTI_FALSE;
             }
 
-            if (!rti::topic::cdr::serialize(
-                stream, &sample->theLongDouble())) {
-                return RTI_FALSE;
-            }
-
-            if (sample->ThePointer().get() == NULL) {
-                return RTI_FALSE;
-            }
-
-            if (!rti::topic::cdr::serialize(
-                stream, sample->ThePointer().get())) {
-                return RTI_FALSE;
-            }
-
         }
 
         if(serialize_encapsulation) {
@@ -428,19 +414,6 @@ PrimitiveStructPlugin_deserialize_sample(
         if (!rti::topic::cdr::deserialize(
             stream, 
             &sample->theUnsignedLongLong())) {
-            goto fin; 
-        }
-        if (!rti::topic::cdr::deserialize(
-            stream, 
-            &sample->theLongDouble())) {
-            goto fin; 
-        }
-        if (!sample->ThePointer().get()) {
-            dds::core::detail::make_locked(sample->ThePointer());
-        }
-        if (!rti::topic::cdr::deserialize(
-            stream, 
-            sample->ThePointer().get())) {
             goto fin; 
         }
     }
@@ -629,12 +602,6 @@ RTIBool PrimitiveStructPlugin_skip(
         if (!RTICdrStream_skipUnsignedLongLong (stream)) {
             goto fin; 
         }
-        if (!RTICdrStream_skipLongDouble (stream)) {
-            goto fin; 
-        }
-        if (!RTICdrStream_skipLong (stream)) {
-            goto fin; 
-        }
     }
 
     done = RTI_TRUE;
@@ -717,12 +684,6 @@ PrimitiveStructPlugin_get_serialized_sample_max_size_ex(
     current_alignment +=RTICdrType_getLongLongMaxSizeSerialized(
         current_alignment);
 
-    current_alignment +=RTICdrType_getLongDoubleMaxSizeSerialized(
-        current_alignment);
-
-    current_alignment +=RTICdrType_getLongMaxSizeSerialized(
-        current_alignment);
-
     if (include_encapsulation) {
         current_alignment += encapsulation_size;
     }
@@ -802,10 +763,6 @@ PrimitiveStructPlugin_get_serialized_sample_min_size(
         current_alignment +=RTICdrType_getLongLongMaxSizeSerialized(
             current_alignment);
         current_alignment +=RTICdrType_getLongLongMaxSizeSerialized(
-            current_alignment);
-        current_alignment +=RTICdrType_getLongDoubleMaxSizeSerialized(
-            current_alignment);
-        current_alignment +=RTICdrType_getLongMaxSizeSerialized(
             current_alignment);
 
         if (include_encapsulation) {
@@ -906,14 +863,6 @@ PrimitiveStructPlugin_get_serialized_sample_size(
                 endpoint_data, current_alignment));
 
         current_alignment += RTICdrType_getLongLongMaxSizeSerialized(
-            PRESTypePluginDefaultEndpointData_getAlignment(
-                endpoint_data, current_alignment));
-
-        current_alignment += RTICdrType_getLongDoubleMaxSizeSerialized(
-            PRESTypePluginDefaultEndpointData_getAlignment(
-                endpoint_data, current_alignment));
-
-        current_alignment += RTICdrType_getLongMaxSizeSerialized(
             PRESTypePluginDefaultEndpointData_getAlignment(
                 endpoint_data, current_alignment));
 
