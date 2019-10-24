@@ -1,9 +1,17 @@
 struct PrimitiveStruct{
 	char theChar;
+	wchar thWchar;
 	boolean theBool;
 	float theFloat;
 	short theShort;
 	long theLong;
 	double theDouble;
+	octet theOctet;
+	unsigned short theUnsignedShort;
+	unsigned long theUnsignedLong;
+	long long theLongLong;
+	unsigned long long theUnsignedLongLong;
+	long double theLongDouble;
+	long* ThePointer;
 	
 	};

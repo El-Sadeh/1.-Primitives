@@ -51,7 +51,6 @@ objs\<arch>\Primitives_subscriber <domain_id>
 
 void publisher_main(int domain_id, int sample_count)
 {
-	//ELAD TEST NEW
     // Create a DomainParticipant with default Qos
     dds::domain::DomainParticipant participant (domain_id);
 
@@ -61,7 +60,8 @@ void publisher_main(int domain_id, int sample_count)
     // Create a DataWriter with default Qos (Publisher created in-line)
     dds::pub::DataWriter<PrimitiveStruct> writer(dds::pub::Publisher(participant), topic);
 
-    PrimitiveStruct sample;
+    PrimitiveStruct sample('c', 'W', true, 0.5, -32768, 2147483647, 1234.567891012, 10, 65535, 4294967295,
+		2147483648, 9223372036854775807, 3.14159265358979323846264338327, NULL);
     for (int count = 0; count < sample_count || sample_count == 0; count++) {
         // Modify the data to be written here
 
