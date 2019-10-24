@@ -51,7 +51,6 @@ objs\<arch>\Primitives_subscriber <domain_id>
 
 void publisher_main(int domain_id, int sample_count)
 {
-	//TEST
     // Create a DomainParticipant with default Qos
     dds::domain::DomainParticipant participant (domain_id);
 
